@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Q&A</h1>
+        <div id="conversation">
+            <!-- 질문과 답변이 여기 표시됩니다. -->
+        </div>
+        <input type="text" id="question" placeholder="Ask a question...">
+        <button id="sendBtn">Send</button>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

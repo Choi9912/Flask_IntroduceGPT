@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Prompt Optimizer App</h1>
+    <div>
+        <h2>Ask a Question</h2>
+        <input type="text" id="question" placeholder="Enter your question here">
+        <button id="sendBtn">Send</button>
+        <div id="conversation"></div>
+    </div>
+    <div>
+        <h2>Analyze Self-Introduction</h2>
+        <textarea id="introduction" placeholder="Enter your self-introduction here"></textarea>
+        <button id="analyzeBtn">Analyze</button>
+        <div id="analysis"></div>
+    </div>
+    <div>
+        <h2>Check Plagiarism</h2>
+        <textarea id="plagiarismText" placeholder="Enter your text here"></textarea>
+        <button id="plagiarismBtn">Check</button>
+        <div id="plagiarismResult"></div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

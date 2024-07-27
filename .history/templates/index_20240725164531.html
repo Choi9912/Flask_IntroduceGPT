@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자기소개서 작성기</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>자기소개서 작성기</h1>
+        <form id="introForm">
+            <label for="question">자기소개서 내용:</label>
+            <textarea id="question" name="question"></textarea><br>
+
+            <button type="button" onclick="generateIntro()">자기소개서 생성</button>
+        </form>
+        <div id="generatedIntro"></div>
+        <div>
+            <h2>맞춤법 검사 결과</h2>
+            <button type="button" onclick="checkSpelling()">맞춤법 검사</button>
+            <div id="spellingResult"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>자기소개서 p</h1>
+    <div>
+        <h2>자기소개서 작성</h2>
+        <input type="text" id="question" placeholder="Enter your question here">
+        <button id="sendBtn">Send</button>
+        <div id="conversation"></div>
+    </div>
+    <div>
+        <h2>자기소개서 분석</h2>
+        <textarea id="introduction" placeholder="Enter your self-introduction here"></textarea>
+        <button id="analyzeBtn">Analyze</button>
+        <div id="analysis"></div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

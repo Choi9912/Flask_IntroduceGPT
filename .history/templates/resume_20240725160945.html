@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Resume Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Generator</h1>
+        <form id="resumeForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone"><br>
+
+            <label for="education">Education:</label>
+            <textarea id="education" name="education"></textarea><br>
+
+            <label for="experience">Experience:</label>
+            <textarea id="experience" name="experience"></textarea><br>
+
+            <label for="skills">Skills:</label>
+            <textarea id="skills" name="skills"></textarea><br>
+
+            <button type="button" onclick="generateResume()">Generate Resume</button>
+        </form>
+        <div id="generatedResume"></div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

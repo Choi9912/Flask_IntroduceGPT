@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plagiarism Checker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Plagiarism Checker</h1>
+        <form id="plagiarismForm">
+            <label for="text">Text:</label>
+            <textarea id="text" name="text"></textarea><br>
+            
+            <button type="submit">Check Plagiarism</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='plagiarism.js') }}"></script>
+</body>
+</html>
