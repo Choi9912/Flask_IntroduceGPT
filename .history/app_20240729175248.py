@@ -1,14 +1,178 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 import logging
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+from flask_cors import CORS
+
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+CORS(app)  
+class SelfIntroductionAnalyzer:
+    def __init__(self, api_url):
+        self.api_url = api_url
 
+    def analyze(self, introduction, method):
+        if method == 'iterative_refinement':
+            return self.iterative_refinement(introduction)
+        elif method == 'step_by_step':
+            return self.step_by_step(introduction)
+        elif method == 'few_shot':
+            return self.few_shot(introduction)
+        elif method == 'constraint_setting':
+            return self.constraint_setting(introduction)
+        else:
+            return 'Error: Invalid method'
+
+    def iterative_refinement(self, introduction):
+        return self.send_request(self.create_messages(introduction))
+
+    def step_by_step(self, introduction):
+        steps = [
+            "단계 1: 자기소개서를 분석합니다.",
+            "단계 2: 주요 포인트와 주제를 식별합니다.",
+            "단계 3: 구조와 일관성을 평가합니다."
+        ]
+        messages = self.create_messages(introduction, " ".join(steps))
+        return self.send_request(messages)
+
+    def few_shot(self, introduction):
+        examples = [
+            {"role": "user", "content": "자기소개서의 강점을 분석해주세요.", "role": "assistant", "content": "자기소개서의 강점은 명확한 목표 설정과 구체적인 경험 사례입니다."},
+            {"role": "user", "content": "자기소개서에서 개선할 점을 알려주세요.", "role": "assistant", "content": "자기소개서의 개선할 점은 내용의 일관성과 논리적 흐름입니다."}
+        ]
+        messages = self.create_messages(introduction, examples=examples)
+        return self.send_request(messages)
+
+    def constraint_setting(self, introduction):
+        constraints = "최대한 자세하게 알려주세요."
+        messages = self.create_messages(introduction, constraints)
+        return self.send_request(messages)
+
+    def create_messages(self, introduction, additional_content="", examples=None):
+        messages = [
+            {"role": "system", "content": "당신은 자기소개서를 분석하는 AI입니다."},
+            {"role": "user", "content": f"다음 자기소개서를 분석해주세요: {introduction} {additional_content}"}
+        ]
+        if examples:
+            messages = [{"role": ex["role"], "content": ex["content"]} for ex in examples] + messages
+        return messages
+
+    def send_request(self, messages):
+        try:
+            response = requests.post(self.api_url, json=messages)
+            response.raise_for_status()
+            return response.json().get('choices')[0]['message']['content']
+        except requests.RequestException as e:
+            logging.error(f"Error in SelfIntroductionAnalyzer: {e}")
+            return 'Error: Unable to get a response from the API'
+
+
+class SelfIntroductionWriter:
+    def __init__(self, api_url):
+        self.api_url = api_url
+
+    def write(self, prompt, method):
+        if method == 'iterative_refinement':
+            return self.iterative_refinement(prompt)
+        elif method == 'step_by_step':
+            return self.step_by_step(prompt)
+        elif method == 'few_shot':
+            return self.few_shot(prompt)
+        elif method == 'constraint_setting':
+            return self.constraint_setting(prompt)
+        else:
+            return 'Error: Invalid method'
+
+    def iterative_refinement(self, prompt):
+        return self.send_request(self.create_messages(prompt))
+
+    def step_by_step(self, prompt):
+        steps = [
+            "단계 1: 지시사항을 이해합니다.",
+            "단계 2: 포함할 주요 포인트를 식별합니다.",
+            "단계 3: 논리적인 흐름으로 자기소개서를 작성합니다."
+        ]
+        messages = self.create_messages(prompt, " ".join(steps))
+        return self.send_request(messages)
+
+    def few_shot(self, prompt):
+... (191줄 남음)
+접기
+app.py
+14KB
+document.addEventListener('DOMContentLoaded', function() {
+    const sendBtn = document.getElementById('sendBtn');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const plagiarismBtn = document.getElementById('plagiarismBtn');
+    const spellCheckBtn = document.getElementById('spellCheckBtn');
+    const actionBtn = document.getElementById('actionBtn');
+확장
+script.js
+5KB
+깃에 커밋하려했는데 살짝 이슈있어서 좀 걸릴거같아서 파일로 드리겠습니당..
+초원범 — 오늘 오전 10:44
+html도 부탁드립니다 ㅎㅎ
+최규성 — 오늘 오전 10:44
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Q&A</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+확장
+index.html
+1KB
+초원범 — 오늘 오전 10:46
+전체프로젝트 압축해서 주시겠어요?
+최규성 — 오늘 오전 10:46
+https://github.com/Choi9912/Flask_GPTapi
+GitHub
+GitHub - Choi9912/Flask_GPTapi
+Contribute to Choi9912/Flask_GPTapi development by creating an account on GitHub.
+GitHub - Choi9912/Flask_GPTapi
+깃허브 올렸습니다!
+초원범 — 오늘 오전 10:51
+84번째 줄에있는 해당 조건식은 무엇을 위한것인가요
+
+data.plagiarism_report && Array.isArray(data.plagiarism_report)
+data.plagiarism_report 값은 문자열로 오는데 문자열이 아니면 무조건 no report로 나오게 되어있네요
+최규성 — 오늘 오전 10:54
+아하...
+이게 수정수정하면서  이부분을 수정못한 거 같습니다
+초원범 — 오늘 오전 10:54
+아하 그렇군요
+저부분만 만지면 잘될것 같네요 ㅎㅎㅎ
+최규성 — 오늘 오전 10:55
+앗 넵 감사합니다
+오.. 됐습니다 감사합니다~
+초원범 — 오늘 오전 11:01
+굿입니다 🙂
+초원범 — 오늘 오후 12:34
+혹시 질문주신 공개페이지가 어디 명시되어있는지 알 수 있을까요??
+이미지
+최규성 — 오늘 오후 12:35
+이미지
+저희 과제란에 있는 엑셀파일에 있어요!
+초원범 — 오늘 오후 12:37
+아하 감사합니다 🙂
+﻿
+초원범
+wonbeomchoi
+ 
+초원범 본명아님.
+from flask import Flask, request, jsonify, render_template
+import requests
+import logging
+from flask_cors import CORS
+
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+
+app = Flask(__name__)
+CORS(app)  
 class SelfIntroductionAnalyzer:
     def __init__(self, api_url):
         self.api_url = api_url
@@ -133,11 +297,7 @@ class SelfIntroductionWriter:
 class PlagiarismDetector:
     def __init__(self, api_url):
         self.api_url = api_url
-        self.known_texts = [
-            "이것은 표절 탐지를 위한 알려진 샘플 텍스트입니다.",
-            "표절 검사를 위해 사용할 수 있는 또 다른 예제 텍스트입니다.",
-            "알려진 텍스트 데이터베이스를 시뮬레이션하기 위한 세 번째 텍스트입니다."
-        ]
+
     
     def check_plagiarism(self, text, method):
         if method == 'iterative_refinement':
@@ -158,7 +318,9 @@ class PlagiarismDetector:
         steps = [
             "단계 1: 텍스트를 분석합니다.",
             "단계 2: 주요 포인트와 주제를 식별합니다.",
-            "단계 3: 표절 여부를 평가합니다."
+            "단계 3: 문장 구조와 단어 선택을 평가합니다.",
+            "단계 4: 아이디어의 독창성을 평가합니다.",
+            "단계 5: 다른 출처와의 유사성을 평가합니다."
         ]
         messages = self.create_messages(text, " ".join(steps))
         return self.send_request(messages)
@@ -172,13 +334,13 @@ class PlagiarismDetector:
         return self.send_request(messages)
 
     def constraint_setting(self, text):
-        constraints = "텍스트의 모든 부분을 꼼꼼히 검사해주세요."
+        constraints = "텍스트의 모든 부분을 꼼꼼히 검사하고, 문장 구조, 단어 선택, 아이디어의 독창성을 고려하여 다른 출처와의 유사성을 평가해주세요."
         messages = self.create_messages(text, constraints)
         return self.send_request(messages)
 
     def create_messages(self, text, additional_content="", examples=None):
         messages = [
-            {"role": "system", "content": "당신은 텍스트를 분석하여 표절 여부를 판단하는 AI입니다."},
+            {"role": "system", "content": "당신은 텍스트를 분석하여 표절 여부를 판단하는 AI입니다. 문장 구조, 단어 선택, 아이디어의 독창성을 고려하여 다른 출처와의 유사성을 평가합니다."},
             {"role": "user", "content": f"다음 텍스트의 표절 여부를 검사해주세요: {text} {additional_content}"}
         ]
         if examples:
@@ -189,11 +351,11 @@ class PlagiarismDetector:
         try:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
+            logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
         except requests.RequestException as e:
-            logging.error(f"Error in PlagiarismDetector: {e}")
-            return 'Error: Unable to get a response from the API'
-
+                logging.error(f"Error in PlagiarismDetector: {e}")
+                return 'Error: Unable to get a response from the API'
 
 
 class SpellChecker:
@@ -270,9 +432,8 @@ class PromptOptimizerApp:
         method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
         report = self.plagiarism_detector.check_plagiarism(text, method)
-
+        logging.debug(f"Plagiarism report: {report}")
         return jsonify({'plagiarism_report': report})
-
 
     def spell_check_route(self):
         data = request.get_json()

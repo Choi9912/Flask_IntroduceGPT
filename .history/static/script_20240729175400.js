@@ -44,17 +44,15 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'analyze':
                 url = '/analyze';
                 body.introduction = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
-                break;
+                body.method = 'iterative_refinement';
             case 'spell_check':
                 url = '/spell_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
+                body.method = 'iterative_refinement'; 
                 break;
             default:
                 return;

@@ -44,24 +44,24 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'analyze':
                 url = '/analyze';
                 body.introduction = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
+                body.method = 'iterative_refinement'; // Default method or can be set dynamically
                 break;
             case 'spell_check':
                 url = '/spell_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
+                body.method = 'iterative_refinement'; // Default method or can be set dynamically
                 break;
             default:
                 return;
         }
 
-        console.log(`Sending request to ${url} with body:`, body);  
+        console.log(`Sending request to ${url} with body:`, body);  // Debug log
 
+        // Disable the action button and show loading indicator
         actionBtn.disabled = true;
         outputDiv.textContent = 'Loading...';
 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);  
+            console.log('Received response:', data);  // Debug log
             let resultText;
             switch (currentAction) {
                 case 'generate':

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const spellCheckBtn = document.getElementById('spellCheckBtn');
     const actionBtn = document.getElementById('actionBtn');
     const inputArea = document.getElementById('inputArea');
+    const methodSelect = document.getElementById('methodSelect');  // 추가된 선택 박스
     const outputDiv = document.getElementById('output');
 
     let currentAction = null;
@@ -12,56 +13,60 @@ document.addEventListener('DOMContentLoaded', function() {
     sendBtn.addEventListener('click', () => {
         currentAction = 'generate';
         inputArea.placeholder = 'Enter your question here';
+        methodSelect.style.display = 'none';  // 방법 선택 숨기기
     });
 
     analyzeBtn.addEventListener('click', () => {
         currentAction = 'analyze';
         inputArea.placeholder = 'Enter your self-introduction here';
+        methodSelect.style.display = 'block';  // 방법 선택 보이기
     });
 
     plagiarismBtn.addEventListener('click', () => {
         currentAction = 'plagiarism_check';
         inputArea.placeholder = 'Enter your text for plagiarism check';
+        methodSelect.style.display = 'block';  // 방법 선택 보이기
     });
 
     spellCheckBtn.addEventListener('click', () => {
         currentAction = 'spell_check';
         inputArea.placeholder = 'Enter your text for spell check';
+        methodSelect.style.display = 'block';  // 방법 선택 보이기
     });
 
     actionBtn.addEventListener('click', () => {
         const text = inputArea.value;
+        const method = methodSelect.value;  // 선택된 방법
         if (text.trim() === '' || !currentAction) return;
 
         let url;
-        const body = {};
+        const body = { text: text, method: method };  // method 추가
 
         switch (currentAction) {
             case 'generate':
                 url = '/generate';
                 body.question = text;
+                delete body.text;
+                delete body.method;  // method 제거
                 break;
             case 'analyze':
                 url = '/analyze';
                 body.introduction = text;
-                body.method = 'iterative_refinement'; // Default method
+                delete body.text;
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
-                body.text = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             case 'spell_check':
                 url = '/spell_check';
-                body.text = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             default:
                 return;
         }
 
-        console.log(`Sending request to ${url} with body:`, body);  
+        console.log(`Sending request to ${url} with body:`, body);  // 디버그 로그 추가
 
+        // Disable the action button and show loading indicator
         actionBtn.disabled = true;
         outputDiv.textContent = 'Loading...';
 
@@ -74,23 +79,16 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);  
+            console.log('Received response:', data);  // 디버그 로그 추가
             let resultText;
-            switch (currentAction) {
-                case 'generate':
-                    resultText = `Generated Response: ${data.answer || 'No response'}`;
-                    break;
-                case 'analyze':
-                    resultText = `Analysis Result: ${data.analysis || 'No response'}`;
-                    break;
-                case 'plagiarism_check':
-                    resultText = `Plagiarism Report: ${data.plagiarism_report || 'No report'}`;
-                    break;
-                case 'spell_check':
-                    resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
-                    break;
-                default:
-                    resultText = 'No valid action performed.';
+            if (currentAction === 'generate') {
+                resultText = `Generated Response: ${data.answer || 'No response'}`;
+            } else if (currentAction === 'analyze') {
+                resultText = `Analysis Result: ${data.analysis || 'No response'}`;
+            } else if (currentAction === 'plagiarism_check') {
+                resultText = `Plagiarism Report: ${data.plagiarism_report || 'No report'}`;
+            } else if (currentAction === 'spell_check') {
+                resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
             }
             outputDiv.textContent = resultText;
         })
