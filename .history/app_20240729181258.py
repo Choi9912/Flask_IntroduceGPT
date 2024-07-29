@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 import logging
-import os
 
 from dotenv import load_dotenv
 
@@ -288,6 +287,7 @@ class PromptOptimizerApp:
         self.app.run(debug=True)
 
 if __name__ == '__main__':
+    API_URL = 'https://open-api.jejucodingcamp.workers.dev/'
     analyzer = SelfIntroductionAnalyzer(API_URL)
     writer = SelfIntroductionWriter(API_URL)
     plagiarism_detector = PlagiarismDetector(API_URL)
