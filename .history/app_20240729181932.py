@@ -221,34 +221,7 @@ class SpellChecker:
     def check(self, text):
         messages = self.create_messages(text)
         return self.send_request(messages)
-    
-    def iterative_refinement(self, text):
-        return self.send_request(self.create_messages(text))
 
-    def step_by_step(self, text):
-        steps = [
-            "단계 1: 텍스트를 분석합니다.",
-            "단계 2: 철자 오류를 식별합니다.",
-            "단계 3: 문법 오류를 식별합니다.",
-            "단계 4: 문장 구조를 평가합니다.",
-            "단계 5: 전체 텍스트의 일관성을 평가합니다."
-        ]
-        messages = self.create_messages(text, " ".join(steps))
-        return self.send_request(messages)
-
-    def few_shot(self, text):
-        examples = [
-            {"role": "user", "content": "다음 텍스트의 맞춤법을 검사해주세요.", "role": "assistant", "content": "이 텍스트에는 다음과 같은 철자 오류가 있습니다: [오류 예시]."},
-            {"role": "user", "content": "이 텍스트의 문법 오류를 수정해주세요.", "role": "assistant", "content": "이 텍스트에는 다음과 같은 문법 오류가 있습니다: [오류 예시]."}
-        ]
-        messages = self.create_messages(text, examples=examples)
-        return self.send_request(messages)
-
-    def constraint_setting(self, text):
-        constraints = "텍스트의 철자와 문법을 철저히 검사하고, 문장 구조와 일관성을 고려하여 전체 텍스트를 평가해주세요."
-        messages = self.create_messages(text, constraints)
-        return self.send_request(messages)
-    
     def create_messages(self, text):
         return [
             {"role": "system", "content": "당신은 맞춤법 검사 AI입니다."},

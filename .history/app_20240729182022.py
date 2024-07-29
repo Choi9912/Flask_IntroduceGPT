@@ -248,7 +248,6 @@ class SpellChecker:
         constraints = "텍스트의 철자와 문법을 철저히 검사하고, 문장 구조와 일관성을 고려하여 전체 텍스트를 평가해주세요."
         messages = self.create_messages(text, constraints)
         return self.send_request(messages)
-    
     def create_messages(self, text):
         return [
             {"role": "system", "content": "당신은 맞춤법 검사 AI입니다."},

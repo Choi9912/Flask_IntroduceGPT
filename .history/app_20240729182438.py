@@ -322,8 +322,9 @@ class PromptOptimizerApp:
     def spell_check_route(self):
         data = request.get_json()
         text = data.get('text')
-        logging.debug(f"Received text for spell check: {text}")
-        report = self.spell_checker.check(text)
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
+        logging.debug(f"Received text for spell check: {text} with method: {method}")
+        report = self.spell_checker.check(text, method)
         return jsonify({'spell_check_report': report})
 
     def run(self):
