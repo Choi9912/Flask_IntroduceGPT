@@ -209,6 +209,10 @@ class SpellChecker:
         ]
 
     def send_request(self, messages):
+        headers = {
+        'Authorization': 'API_URL',  # 여기에 올바른 API 키를 추가하세요.
+        'Content-Type': 'application/json'
+        }
         try:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
@@ -269,6 +273,7 @@ class PromptOptimizerApp:
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
         report = self.plagiarism_detector.check_plagiarism(text, method)
         logging.debug(f"Plagiarism report: {report}")
+        
         return jsonify({'plagiarism_report': report})
 
     def spell_check_route(self):

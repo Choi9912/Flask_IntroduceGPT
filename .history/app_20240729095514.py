@@ -1,14 +1,14 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 import logging
-from flask_cors import CORS
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app)  
+
 class SelfIntroductionAnalyzer:
     def __init__(self, api_url):
         self.api_url = api_url
@@ -129,11 +129,14 @@ class SelfIntroductionWriter:
             return 'Error: Unable to get a response from the API'
 
 
-
 class PlagiarismDetector:
     def __init__(self, api_url):
         self.api_url = api_url
-
+        self.known_texts = [
+            "이것은 표절 탐지를 위한 알려진 샘플 텍스트입니다.",
+            "표절 검사를 위해 사용할 수 있는 또 다른 예제 텍스트입니다.",
+            "알려진 텍스트 데이터베이스를 시뮬레이션하기 위한 세 번째 텍스트입니다."
+        ]
     
     def check_plagiarism(self, text, method):
         if method == 'iterative_refinement':
@@ -154,9 +157,7 @@ class PlagiarismDetector:
         steps = [
             "단계 1: 텍스트를 분석합니다.",
             "단계 2: 주요 포인트와 주제를 식별합니다.",
-            "단계 3: 문장 구조와 단어 선택을 평가합니다.",
-            "단계 4: 아이디어의 독창성을 평가합니다.",
-            "단계 5: 다른 출처와의 유사성을 평가합니다."
+            "단계 3: 표절 여부를 평가합니다."
         ]
         messages = self.create_messages(text, " ".join(steps))
         return self.send_request(messages)
@@ -170,13 +171,13 @@ class PlagiarismDetector:
         return self.send_request(messages)
 
     def constraint_setting(self, text):
-        constraints = "텍스트의 모든 부분을 꼼꼼히 검사하고, 문장 구조, 단어 선택, 아이디어의 독창성을 고려하여 다른 출처와의 유사성을 평가해주세요."
+        constraints = "텍스트의 모든 부분을 꼼꼼히 검사해주세요."
         messages = self.create_messages(text, constraints)
         return self.send_request(messages)
 
     def create_messages(self, text, additional_content="", examples=None):
         messages = [
-            {"role": "system", "content": "당신은 텍스트를 분석하여 표절 여부를 판단하는 AI입니다. 문장 구조, 단어 선택, 아이디어의 독창성을 고려하여 다른 출처와의 유사성을 평가합니다."},
+            {"role": "system", "content": "당신은 텍스트를 분석하여 표절 여부를 판단하는 AI입니다."},
             {"role": "user", "content": f"다음 텍스트의 표절 여부를 검사해주세요: {text} {additional_content}"}
         ]
         if examples:
@@ -187,11 +188,11 @@ class PlagiarismDetector:
         try:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
-            logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
         except requests.RequestException as e:
-                logging.error(f"Error in PlagiarismDetector: {e}")
-                return 'Error: Unable to get a response from the API'
+            logging.error(f"Error in PlagiarismDetector: {e}")
+            return 'Error: Unable to get a response from the API'
+
 
 
 class SpellChecker:
@@ -261,14 +262,16 @@ class PromptOptimizerApp:
         logging.debug(f"Received prompt: {prompt} with method: {method}")
         writing = self.writer.write(prompt, method)
         return jsonify({'writing': writing})
-        
-    def plagiarism_check_route(self):
+    
+    def plagiarism_check_route():
         data = request.get_json()
         text = data.get('text')
         method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
-        report = self.plagiarism_detector.check_plagiarism(text, method)
-        logging.debug(f"Plagiarism report: {report}")
+
+        plagiarism_detector = PlagiarismDetector(API_URL)
+        report = plagiarism_detector.check_plagiarism(text, method)
+
         return jsonify({'plagiarism_report': report})
 
     def spell_check_route(self):

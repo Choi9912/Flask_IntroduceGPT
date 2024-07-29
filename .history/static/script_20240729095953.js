@@ -58,8 +58,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
         }
 
-        console.log(`Sending request to ${url} with body:`, body);  // 디버그 로그 추가
-
         // Disable the action button and show loading indicator
         actionBtn.disabled = true;
         outputDiv.textContent = 'Loading...';
@@ -73,13 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);  // 디버그 로그 추가
             let resultText;
             if (currentAction === 'generate') {
                 resultText = `Generated Response: ${data.answer || 'No response'}`;
             } else if (currentAction === 'analyze') {
                 resultText = `Analysis Result: ${data.analysis || 'No response'}`;
             } else if (currentAction === 'plagiarism_check') {
+                console.log(data);  // 디버그 로그 추가
                 if (data.plagiarism_report && Array.isArray(data.plagiarism_report)) {
                     resultText = data.plagiarism_report.map(report => 
                         `Known Text: ${report.known_text}\nSimilarity: ${report.similarity}\nIs Plagiarized: ${report.is_plagiarized}`

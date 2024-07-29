@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let url;
         const body = { text: text };
-
+        
         switch (currentAction) {
             case 'generate':
                 url = '/generate';
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
-                body.method = 'iterative_refinement'; // 예: 원하는 방법을 지정
                 break;
             case 'spell_check':
                 url = '/spell_check';
@@ -58,11 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
         }
 
-        console.log(`Sending request to ${url} with body:`, body);  // 디버그 로그 추가
-
         // Disable the action button and show loading indicator
         actionBtn.disabled = true;
-        outputDiv.textContent = 'Loading...';
+        outputDiv.innerHTML = '<p>Loading...</p>';
 
         fetch(url, {
             method: 'POST',
@@ -73,28 +70,31 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);  // 디버그 로그 추가
-            let resultText;
+            let resultHTML = '';
             if (currentAction === 'generate') {
-                resultText = `Generated Response: ${data.answer || 'No response'}`;
+                resultHTML = `<h3>Generated Response:</h3><p>${data.answer || 'No response'}</p>`;
             } else if (currentAction === 'analyze') {
-                resultText = `Analysis Result: ${data.analysis || 'No response'}`;
+                resultHTML = `<h3>Analysis Result:</h3><p>${data.analysis || 'No response'}</p>`;
             } else if (currentAction === 'plagiarism_check') {
-                if (data.plagiarism_report && Array.isArray(data.plagiarism_report)) {
-                    resultText = data.plagiarism_report.map(report => 
-                        `Known Text: ${report.known_text}\nSimilarity: ${report.similarity}\nIs Plagiarized: ${report.is_plagiarized}`
-                    ).join('\n\n');
+                const report = data.plagiarism_report;
+                if (typeof report === 'object' && report !== null) {
+                    resultHTML = `
+                        <h3>Plagiarism Report:</h3>
+                        <p><strong>Similarity Score:</strong> ${report.similarity_score}</p>
+                        <p><strong>AI Analysis:</strong> ${report.ai_analysis}</p>
+                        <p><strong>Preprocessed Text:</strong> ${report.preprocessed_text}</p>
+                    `;
                 } else {
-                    resultText = 'No report';
+                    resultHTML = `<p>Plagiarism Report: ${report || 'No report'}</p>`;
                 }
             } else if (currentAction === 'spell_check') {
-                resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
+                resultHTML = `<h3>Spell Check Report:</h3><p>${data.spell_check_report || 'No report'}</p>`;
             }
-            outputDiv.textContent = resultText;
+            outputDiv.innerHTML = resultHTML;
         })
         .catch(error => {
             console.error('Error:', error);
-            outputDiv.textContent = 'Error: Unable to get a response from the server.';
+            outputDiv.innerHTML = '<p>Error: Unable to get a response from the server.</p>';
         })
         .finally(() => {
             // Re-enable the action button and clear the input

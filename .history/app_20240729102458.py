@@ -9,6 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 CORS(app)  
+
 class SelfIntroductionAnalyzer:
     def __init__(self, api_url):
         self.api_url = api_url
@@ -190,8 +191,9 @@ class PlagiarismDetector:
             logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
         except requests.RequestException as e:
-                logging.error(f"Error in PlagiarismDetector: {e}")
-                return 'Error: Unable to get a response from the API'
+            logging.error(f"Error in PlagiarismDetector: {e}")
+            return 'Error: Unable to get a response from the API'
+
 
 
 class SpellChecker:
@@ -264,12 +266,21 @@ class PromptOptimizerApp:
         
     def plagiarism_check_route(self):
         data = request.get_json()
+        logging.debug(f"Request data: {data}")
+        
         text = data.get('text')
         method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
+        
         report = self.plagiarism_detector.check_plagiarism(text, method)
         logging.debug(f"Plagiarism report: {report}")
-        return jsonify({'plagiarism_report': report})
+        
+        response = {'plagiarism_report': report}
+        return jsonify(response)
+
+
+
+
 
     def spell_check_route(self):
         data = request.get_json()

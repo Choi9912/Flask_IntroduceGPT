@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let url;
         const body = { text: text };
-
+        
         switch (currentAction) {
             case 'generate':
                 url = '/generate';
@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
-                body.method = 'iterative_refinement'; // 예: 원하는 방법을 지정
                 break;
             case 'spell_check':
                 url = '/spell_check';
@@ -57,8 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
             default:
                 return;
         }
-
-        console.log(`Sending request to ${url} with body:`, body);  // 디버그 로그 추가
 
         // Disable the action button and show loading indicator
         actionBtn.disabled = true;
@@ -73,20 +70,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);  // 디버그 로그 추가
             let resultText;
             if (currentAction === 'generate') {
                 resultText = `Generated Response: ${data.answer || 'No response'}`;
             } else if (currentAction === 'analyze') {
                 resultText = `Analysis Result: ${data.analysis || 'No response'}`;
             } else if (currentAction === 'plagiarism_check') {
-                if (data.plagiarism_report && Array.isArray(data.plagiarism_report)) {
-                    resultText = data.plagiarism_report.map(report => 
-                        `Known Text: ${report.known_text}\nSimilarity: ${report.similarity}\nIs Plagiarized: ${report.is_plagiarized}`
-                    ).join('\n\n');
-                } else {
-                    resultText = 'No report';
-                }
+                resultText = `Plagiarism Report: ${data.plagiarism_report.map(report => `\nKnown Text: ${report.known_text}\nSimilarity: ${report.similarity}\nIs Plagiarized: ${report.is_plagiarized}`).join('\n\n') || 'No report'}`;
             } else if (currentAction === 'spell_check') {
                 resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
             }

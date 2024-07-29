@@ -1,14 +1,16 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import requests
 import logging
-from flask_cors import CORS
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
-CORS(app)  
+CORS(app)  # CORS 설정 추가
+
 class SelfIntroductionAnalyzer:
     def __init__(self, api_url):
         self.api_url = api_url
@@ -63,6 +65,7 @@ class SelfIntroductionAnalyzer:
         try:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
+            logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
         except requests.RequestException as e:
             logging.error(f"Error in SelfIntroductionAnalyzer: {e}")
@@ -123,17 +126,21 @@ class SelfIntroductionWriter:
         try:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
+            logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
         except requests.RequestException as e:
             logging.error(f"Error in SelfIntroductionWriter: {e}")
             return 'Error: Unable to get a response from the API'
 
 
-
 class PlagiarismDetector:
     def __init__(self, api_url):
         self.api_url = api_url
-
+        self.known_texts = [
+            "이것은 표절 탐지를 위한 알려진 샘플 텍스트입니다.",
+            "표절 검사를 위해 사용할 수 있는 또 다른 예제 텍스트입니다.",
+            "알려진 텍스트 데이터베이스를 시뮬레이션하기 위한 세 번째 텍스트입니다."
+        ]
     
     def check_plagiarism(self, text, method):
         if method == 'iterative_refinement':
@@ -189,32 +196,8 @@ class PlagiarismDetector:
             response.raise_for_status()
             logging.debug(f"API Response: {response.json()}")  # 추가된 디버그 로그
             return response.json().get('choices')[0]['message']['content']
-        except requests.RequestException as e:
-                logging.error(f"Error in PlagiarismDetector: {e}")
-                return 'Error: Unable to get a response from the API'
-
-
-class SpellChecker:
-    def __init__(self, api_url):
-        self.api_url = api_url
-
-    def check(self, text):
-        messages = self.create_messages(text)
-        return self.send_request(messages)
-
-    def create_messages(self, text):
-        return [
-            {"role": "system", "content": "당신은 맞춤법 검사 AI입니다."},
-            {"role": "user", "content": f"다음 글의 맞춤법을 확인해주세요: {text}"}
-        ]
-
-    def send_request(self, messages):
-        try:
-            response = requests.post(self.api_url, json=messages)
-            response.raise_for_status()
-            return response.json().get('choices')[0]['message']['content']
-        except requests.RequestException as e:
-            logging.error(f"Error in SpellChecker: {e}")
+    except requests.RequestException as e:
+            logging.error(f"Error in PlagiarismDetector: {e}")
             return 'Error: Unable to get a response from the API'
 
 
@@ -261,7 +244,7 @@ class PromptOptimizerApp:
         logging.debug(f"Received prompt: {prompt} with method: {method}")
         writing = self.writer.write(prompt, method)
         return jsonify({'writing': writing})
-        
+
     def plagiarism_check_route(self):
         data = request.get_json()
         text = data.get('text')
@@ -269,6 +252,7 @@ class PromptOptimizerApp:
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
         report = self.plagiarism_detector.check_plagiarism(text, method)
         logging.debug(f"Plagiarism report: {report}")
+        
         return jsonify({'plagiarism_report': report})
 
     def spell_check_route(self):
