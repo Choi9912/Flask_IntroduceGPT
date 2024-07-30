@@ -80,28 +80,27 @@ document.addEventListener('DOMContentLoaded', function() {
             let resultText;
             switch (currentAction) {
                 case 'generate':
-                    resultText = `Generated Response: ${data.answer || 'No response'}`;
+                    resultText = data.answer || 'No response';
                     break;
                 case 'analyze':
-                    resultText = `Analysis Result: ${data.analysis || 'No response'}`;
+                    resultText = data.analysis || 'No response';
                     break;
                 case 'plagiarism_check':
-                    resultText = `Plagiarism Report: ${data.plagiarism_report || 'No report'}`;
+                    resultText = data.plagiarism_report || 'No report';
                     break;
                 case 'spell_check':
-                    resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
+                    resultText = data.spell_check_report || 'No report';
                     break;
                 default:
                     resultText = 'No valid action performed.';
             }
-            appendMessage('bot', resultText);
+            appendParagraphs('bot', resultText);
         })
         .catch(error => {
             console.error('Error:', error);
             appendMessage('bot', 'Error: Unable to get a response from the server.');
         })
         .finally(() => {
-            // Re-enable the action button
             actionBtn.disabled = false;
         });
     });
@@ -112,5 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
         messageElement.textContent = message;
         chatBox.appendChild(messageElement);
         chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function appendParagraphs(sender, text) {
+        const paragraphs = text.split('\n\n');
+        paragraphs.forEach(paragraph => {
+            appendMessage(sender, paragraph);
+        });
     }
 });
