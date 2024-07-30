@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>자기소개서, 면접</title>
+    <title>AI Q&A</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,7 @@
 <body>
     <div class="app-container">
         <div class="header">
-            <h1>자기소개서 + 면접질문 GPT</h1>
+            <h1>AI Q&A</h1>
         </div>
         <div class="main-content">
             <div class="sidebar">
@@ -18,10 +18,11 @@
                 <button class="sidebar-btn" id="analyzeBtn">자기소개서 분석</button>
                 <button class="sidebar-btn" id="plagiarismBtn">카피킬러</button>
                 <button class="sidebar-btn" id="spellCheckBtn">맞춤법 검사</button>
-                <button class="sidebar-btn" id="interviewQuestionsBtn">면접 질문 생성</button>
             </div>
             <div class="chat-container">
-                <div id="chat-box"></div>
+                <div id="chat-box">
+                    <!-- Chat messages will be appended here -->
+                </div>
                 <textarea id="inputArea" placeholder="Type your message here..." spellcheck="false"></textarea>
                 <button class="submit-btn" id="actionBtn">Send</button>
             </div>

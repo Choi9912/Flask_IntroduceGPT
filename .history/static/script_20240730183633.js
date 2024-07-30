@@ -108,8 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 default:
                     resultText = 'No valid action performed.';
             }
-            resultText = resultText.replace(/### /g, '').replace(/\*\*/g, '');
-            appendParagraphs('bot', resultText);
+            appendHtml('bot', resultText);
         })
         .catch(error => {
             console.error('Error:', error);

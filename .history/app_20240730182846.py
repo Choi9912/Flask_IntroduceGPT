@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify, render_template
 import requests
 import logging
 import os
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -274,6 +273,8 @@ class SpellChecker:
         except requests.RequestException as e:
             logging.error(f"Error in SpellChecker: {e}")
             return 'Error: Unable to get a response from the API'
+
+
 class InterviewQuestionGenerator:
     def __init__(self, api_url):
         self.api_url = api_url
@@ -332,8 +333,8 @@ class InterviewQuestionGenerator:
             logging.error(f"Error in InterviewQuestionGenerator: {e}")
             return 'Error: Unable to get a response from the API'
 
+
 class PromptOptimizerApp:
-    # 기존 코드 유지
     def __init__(self, analyzer, writer, plagiarism_detector, spell_checker, interview_question_generator):
         self.app = Flask(__name__)
         self.analyzer = analyzer
@@ -343,7 +344,6 @@ class PromptOptimizerApp:
         self.interview_question_generator = interview_question_generator
         self.setup_routes()
 
-    # 기존 setup_routes 메소드 유지
     def setup_routes(self):
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/generate', 'generate', self.generate, methods=['POST'])
@@ -353,7 +353,51 @@ class PromptOptimizerApp:
         self.app.add_url_rule('/spell_check', 'spell_check', self.spell_check_route, methods=['POST'])
         self.app.add_url_rule('/generate_interview_questions', 'generate_interview_questions', self.generate_interview_questions, methods=['POST'])
 
-    # 새로운 라우트 메소드 추가
+    def index(self):
+        return render_template('index.html')
+
+    def generate(self):
+        data = request.get_json()
+        question = data.get('question')
+        logging.debug(f"Received question: {question}")
+
+        answer = self.writer.iterative_refinement(question)
+        return jsonify({'answer': answer})
+
+    def analyze_route(self):
+        data = request.get_json()
+        introduction = data.get('introduction')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
+        logging.debug(f"Received introduction: {introduction} with method: {method}")
+        analysis = self.analyzer.analyze(introduction, method)
+        return jsonify({'analysis': analysis})
+
+    def write_route(self):
+        data = request.get_json()
+        prompt = data.get('prompt')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
+        logging.debug(f"Received prompt: {prompt} with method: {method}")
+        writing = self.writer.write(prompt, method)
+        return jsonify({'writing': writing})
+        
+    def plagiarism_check_route(self):
+        data = request.get_json()
+        text = data.get('text')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
+        logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
+        report = self.plagiarism_detector.check_plagiarism(text, method)
+
+        return jsonify({'plagiarism_report': report})
+
+
+    def spell_check_route(self):
+        data = request.get_json()
+        text = data.get('text')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
+        logging.debug(f"Received text for spell check: {text} with method: {method}")
+        report = self.spell_checker.check(text, method)
+        return jsonify({'spell_check_report': report})
+
     def generate_interview_questions(self):
         data = request.get_json()
         job_description = data.get('job_description')
@@ -362,56 +406,6 @@ class PromptOptimizerApp:
         questions = self.interview_question_generator.generate_questions(job_description, method)
         return jsonify({'questions': questions})
 
-    # 기존 메소드 유지
-    def index(self):
-        return render_template('index.html')
-
-    def generate(self):
-        data = request.get_json()
-        question = data.get('question')
-        logging.debug(f"Received question: {question}")
-        answer = self.writer.iterative_refinement(question)
-        return jsonify({'answer': answer})
-
-    def analyze_route(self):
-        data = request.get_json()
-        introduction = data.get('introduction')
-        method = data.get('method', 'iterative_refinement')
-        logging.debug(f"Received introduction: {introduction} with method: {method}")
-        analysis = self.analyzer.analyze(introduction, method)
-        return jsonify({'analysis': analysis})
-
-    def write_route(self):
-        data = request.get_json()
-        prompt = data.get('prompt')
-        method = data.get('method', 'iterative_refinement')
-        logging.debug(f"Received prompt: {prompt} with method: {method}")
-        writing = self.writer.write(prompt, method)
-        return jsonify({'writing': writing})
-
-    def plagiarism_check_route(self):
-        data = request.get_json()
-        text = data.get('text')
-        method = data.get('method', 'iterative_refinement')
-        logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
-        report = self.plagiarism_detector.check_plagiarism(text, method)
-        return jsonify({'plagiarism_report': report})
-
-    def spell_check_route(self):
-        data = request.get_json()
-        text = data.get('text')
-        method = data.get('method', 'iterative_refinement')
-        logging.debug(f"Received text for spell check: {text} with method: {method}")
-        report = self.spell_checker.check(text, method)
-        return jsonify({'spell_check_report': report})
-    
-    def generate_interview_questions(self):
-        data = request.get_json()
-        job_description = data.get('job_description')
-        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
-        logging.debug(f"Received job description: {job_description} with method: {method}")
-        questions = self.interview_question_generator.generate_questions(job_description, method)
-        return jsonify({'questions': questions})    
     def run(self):
         self.app.run(debug=True)
 

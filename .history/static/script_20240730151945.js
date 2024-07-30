@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const analyzeBtn = document.getElementById('analyzeBtn');
     const plagiarismBtn = document.getElementById('plagiarismBtn');
     const spellCheckBtn = document.getElementById('spellCheckBtn');
-    const interviewQuestionsBtn = document.getElementById('interviewQuestionsBtn');
     const actionBtn = document.getElementById('actionBtn');
     const inputArea = document.getElementById('inputArea');
     const chatBox = document.getElementById('chat-box');
@@ -34,12 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         appendMessage('bot', '맞춤법 검사 기능을 선택하셨습니다.');
     });
 
-    interviewQuestionsBtn.addEventListener('click', () => {
-        currentAction = 'generate_interview_questions';
-        inputArea.placeholder = 'Enter the job description here';
-        appendMessage('bot', '면접 질문 생성 기능을 선택하셨습니다.');
-    });
-
     actionBtn.addEventListener('click', () => {
         const text = inputArea.value;
         if (text.trim() === '' || !currentAction) return;
@@ -64,15 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 url = '/spell_check';
                 body.text = text;
                 break;
-            case 'generate_interview_questions':
-                url = '/generate_interview_questions';
-                body.job_description = text;
-                break;
             default:
                 return;
         }
 
-        console.log(`Sending request to ${url} with body:`, body);
+        console.log(`Sending request to ${url} with body:`, body);  
 
         actionBtn.disabled = true;
         appendMessage('user', text);
@@ -87,35 +76,32 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Received response:', data);
+            console.log('Received response:', data);  
             let resultText;
             switch (currentAction) {
                 case 'generate':
-                    resultText = data.answer || 'No response';
+                    resultText = `Generated Response: ${data.answer || 'No response'}`;
                     break;
                 case 'analyze':
-                    resultText = data.analysis || 'No response';
+                    resultText = `Analysis Result: ${data.analysis || 'No response'}`;
                     break;
                 case 'plagiarism_check':
-                    resultText = data.plagiarism_report || 'No report';
+                    resultText = `Plagiarism Report: ${data.plagiarism_report || 'No report'}`;
                     break;
                 case 'spell_check':
-                    resultText = data.spell_check_report || 'No report';
-                    break;
-                case 'generate_interview_questions':
-                    resultText = data.questions || 'No questions';
+                    resultText = `Spell Check Report: ${data.spell_check_report || 'No report'}`;
                     break;
                 default:
                     resultText = 'No valid action performed.';
             }
-            resultText = resultText.replace(/### /g, '').replace(/\*\*/g, '');
-            appendParagraphs('bot', resultText);
+            appendMessage('bot', resultText);
         })
         .catch(error => {
             console.error('Error:', error);
             appendMessage('bot', 'Error: Unable to get a response from the server.');
         })
         .finally(() => {
+            // Re-enable the action button
             actionBtn.disabled = false;
         });
     });
@@ -127,19 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
         chatBox.appendChild(messageElement);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-
-    function appendHtml(sender, htmlContent) {
-        let messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', sender);
-        messageElement.innerHTML = htmlContent;
-        chatBox.appendChild(messageElement);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
     function appendParagraphs(sender, text) {
         const paragraphs = text.split('\n\n');
         paragraphs.forEach(paragraph => {
-            appendHtml(sender, `<p>${paragraph}</p>`);
+            appendMessage(sender, paragraph);
         });
-    }
 });

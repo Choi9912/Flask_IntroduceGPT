@@ -108,8 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 default:
                     resultText = 'No valid action performed.';
             }
-            resultText = resultText.replace(/### /g, '').replace(/\*\*/g, '');
-            appendParagraphs('bot', resultText);
+            appendHtml('bot', resultText);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -134,12 +133,5 @@ document.addEventListener('DOMContentLoaded', function() {
         messageElement.innerHTML = htmlContent;
         chatBox.appendChild(messageElement);
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function appendParagraphs(sender, text) {
-        const paragraphs = text.split('\n\n');
-        paragraphs.forEach(paragraph => {
-            appendHtml(sender, `<p>${paragraph}</p>`);
-        });
     }
 });

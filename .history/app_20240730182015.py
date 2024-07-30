@@ -404,14 +404,7 @@ class PromptOptimizerApp:
         logging.debug(f"Received text for spell check: {text} with method: {method}")
         report = self.spell_checker.check(text, method)
         return jsonify({'spell_check_report': report})
-    
-    def generate_interview_questions(self):
-        data = request.get_json()
-        job_description = data.get('job_description')
-        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
-        logging.debug(f"Received job description: {job_description} with method: {method}")
-        questions = self.interview_question_generator.generate_questions(job_description, method)
-        return jsonify({'questions': questions})    
+
     def run(self):
         self.app.run(debug=True)
 

@@ -67,7 +67,6 @@ class SelfIntroductionAnalyzer:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
             return response.json().get('choices')[0]['message']['content']
-
         except requests.RequestException as e:
             logging.error(f"Error in SelfIntroductionAnalyzer: {e}")
             return 'Error: Unable to get a response from the API'
@@ -146,7 +145,6 @@ class SelfIntroductionWriter:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
             return response.json().get('choices')[0]['message']['content']
-        
         except requests.RequestException as e:
             logging.error(f"Error in SelfIntroductionWriter: {e}")
             return 'Error: Unable to get a response from the API'
@@ -210,7 +208,6 @@ class PlagiarismDetector:
             response = requests.post(self.api_url, json=messages)
             response.raise_for_status()
             return response.json().get('choices')[0]['message']['content']
-        
         except requests.RequestException as e:
             logging.error(f"Error in PlagiarismDetector: {e}")
             return 'Error: Unable to get a response from the API'
@@ -274,76 +271,17 @@ class SpellChecker:
         except requests.RequestException as e:
             logging.error(f"Error in SpellChecker: {e}")
             return 'Error: Unable to get a response from the API'
-class InterviewQuestionGenerator:
-    def __init__(self, api_url):
-        self.api_url = api_url
 
-    def generate_questions(self, job_description, method):
-        if method == 'iterative_refinement':
-            return self.iterative_refinement(job_description)
-        elif method == 'step_by_step':
-            return self.step_by_step(job_description)
-        elif method == 'few_shot':
-            return self.few_shot(job_description)
-        elif method == 'constraint_setting':
-            return self.constraint_setting(job_description)
-        else:
-            return 'Error: Invalid method'
-
-    def iterative_refinement(self, job_description):
-        return self.send_request(self.create_messages(job_description))
-
-    def step_by_step(self, job_description):
-        steps = [
-            "단계 1: 채용정보를 분석합니다.",
-            "단계 2: 주요 요구사항과 필수 스킬을 식별합니다.",
-            "단계 3: 이에 맞는 면접 질문을 생성합니다."
-        ]
-        messages = self.create_messages(job_description, " ".join(steps))
-        return self.send_request(messages)
-
-    def few_shot(self, job_description):
-        examples = [
-            {"role": "user", "content": "다음 채용정보에 맞는 면접 질문을 생성해주세요.", "role": "assistant", "content": "채용정보에 따르면 주요 요구사항은 [요구사항]입니다. 이에 대한 질문으로는 [질문 예시]가 있습니다."}
-        ]
-        messages = self.create_messages(job_description, examples=examples)
-        return self.send_request(messages)
-
-    def constraint_setting(self, job_description):
-        constraints = "채용정보에 명시된 요구사항과 필수 스킬을 기반으로 면접 질문을 생성해주세요."
-        messages = self.create_messages(job_description, constraints)
-        return self.send_request(messages)
-
-    def create_messages(self, job_description, additional_content="", examples=None):
-        messages = [
-            {"role": "system", "content": "당신은 채용정보를 분석하여 면접 질문을 생성하는 AI입니다."},
-            {"role": "user", "content": f"다음 채용정보를 바탕으로 면접 질문을 생성해주세요: {job_description} {additional_content}"}
-        ]
-        if examples:
-            messages = [{"role": ex["role"], "content": ex["content"]} for ex in examples] + messages
-        return messages
-
-    def send_request(self, messages):
-        try:
-            response = requests.post(self.api_url, json=messages)
-            response.raise_for_status()
-            return response.json().get('choices')[0]['message']['content']
-        except requests.RequestException as e:
-            logging.error(f"Error in InterviewQuestionGenerator: {e}")
-            return 'Error: Unable to get a response from the API'
 
 class PromptOptimizerApp:
-    # 기존 코드 유지
-    def __init__(self, analyzer, writer, plagiarism_detector, spell_checker, interview_question_generator):
+    def __init__(self, analyzer, writer, plagiarism_detector, spell_checker):
         self.app = Flask(__name__)
         self.analyzer = analyzer
         self.writer = writer
         self.plagiarism_detector = plagiarism_detector
         self.spell_checker = spell_checker
-        self.interview_question_generator = interview_question_generator
         self.setup_routes()
 
-    # 기존 setup_routes 메소드 유지
     def setup_routes(self):
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/generate', 'generate', self.generate, methods=['POST'])
@@ -351,18 +289,7 @@ class PromptOptimizerApp:
         self.app.add_url_rule('/write', 'write', self.write_route, methods=['POST'])
         self.app.add_url_rule('/plagiarism_check', 'plagiarism_check', self.plagiarism_check_route, methods=['POST'])
         self.app.add_url_rule('/spell_check', 'spell_check', self.spell_check_route, methods=['POST'])
-        self.app.add_url_rule('/generate_interview_questions', 'generate_interview_questions', self.generate_interview_questions, methods=['POST'])
 
-    # 새로운 라우트 메소드 추가
-    def generate_interview_questions(self):
-        data = request.get_json()
-        job_description = data.get('job_description')
-        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
-        logging.debug(f"Received job description: {job_description} with method: {method}")
-        questions = self.interview_question_generator.generate_questions(job_description, method)
-        return jsonify({'questions': questions})
-
-    # 기존 메소드 유지
     def index(self):
         return render_template('index.html')
 
@@ -370,13 +297,14 @@ class PromptOptimizerApp:
         data = request.get_json()
         question = data.get('question')
         logging.debug(f"Received question: {question}")
+
         answer = self.writer.iterative_refinement(question)
         return jsonify({'answer': answer})
 
     def analyze_route(self):
         data = request.get_json()
         introduction = data.get('introduction')
-        method = data.get('method', 'iterative_refinement')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received introduction: {introduction} with method: {method}")
         analysis = self.analyzer.analyze(introduction, method)
         return jsonify({'analysis': analysis})
@@ -384,34 +312,29 @@ class PromptOptimizerApp:
     def write_route(self):
         data = request.get_json()
         prompt = data.get('prompt')
-        method = data.get('method', 'iterative_refinement')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received prompt: {prompt} with method: {method}")
         writing = self.writer.write(prompt, method)
         return jsonify({'writing': writing})
-
+        
     def plagiarism_check_route(self):
         data = request.get_json()
         text = data.get('text')
-        method = data.get('method', 'iterative_refinement')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received text for plagiarism check: {text} with method: {method}")
         report = self.plagiarism_detector.check_plagiarism(text, method)
+
         return jsonify({'plagiarism_report': report})
+
 
     def spell_check_route(self):
         data = request.get_json()
         text = data.get('text')
-        method = data.get('method', 'iterative_refinement')
+        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
         logging.debug(f"Received text for spell check: {text} with method: {method}")
         report = self.spell_checker.check(text, method)
         return jsonify({'spell_check_report': report})
-    
-    def generate_interview_questions(self):
-        data = request.get_json()
-        job_description = data.get('job_description')
-        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
-        logging.debug(f"Received job description: {job_description} with method: {method}")
-        questions = self.interview_question_generator.generate_questions(job_description, method)
-        return jsonify({'questions': questions})    
+
     def run(self):
         self.app.run(debug=True)
 
@@ -420,6 +343,5 @@ if __name__ == '__main__':
     writer = SelfIntroductionWriter(API_URL)
     plagiarism_detector = PlagiarismDetector(API_URL)
     spell_checker = SpellChecker(API_URL)
-    interview_question_generator = InterviewQuestionGenerator(API_URL)
-    app_instance = PromptOptimizerApp(analyzer, writer, plagiarism_detector, spell_checker, interview_question_generator)
+    app_instance = PromptOptimizerApp(analyzer, writer, plagiarism_detector, spell_checker)
     app_instance.run()
