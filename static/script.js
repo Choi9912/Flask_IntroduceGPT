@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function() {
             appendMessage('bot', 'Error: Unable to get a response from the server.');
         })
         .finally(() => {
-            // Re-enable the action button
             actionBtn.disabled = false;
         });
     });
