@@ -46,11 +46,13 @@ AI_자기소개서는 GPT_API 기술을 사용하여 자기소개서를 분석�
 
 | 자기소개서 작성 | 자기소개서 분석  |
 | --- | --- |
-| ![alt text](<자기소개서 작성.gif>) | ![alt text](<자기소개서 분석.gif>) |
+| ![자기소개서 작성](https://github.com/user-attachments/assets/ccf01159-0173-4ce7-a11b-3c4d49aa6a51) | ![자기소개서 분석](https://github.com/user-attachments/assets/5803ae7f-ec0c-45b5-89e1-084aee6e01b9)
+ |
 
 | 카피 킬러 | 맞춤법 검사 |
 | --- | --- |
-| ![alt text](<카피 킬러.gif>) | ![alt text](<맞춤법 검사.gif>) |
+| ![카피킬러](https://github.com/user-attachments/assets/2ac3030e-ca2f-40c7-adf8-36980536cf31) | ![맞춤법 검사](https://github.com/user-attachments/assets/04297c36-71e4-4bbe-9b68-3d4423c65428)
+ |
 
 
 # 회고
