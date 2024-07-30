@@ -4,19 +4,27 @@
     <meta charset="UTF-8">
     <title>AI Q&A</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <button id="sendBtn">자기소개서 작성</button>
-            <button id="analyzeBtn">자기소개서 분석</button>
-            <button id="plagiarismBtn">카피킬러</button>
-            <button id="spellCheckBtn">맞춤법 검사</button>
+    <div class="app-container">
+        <div class="header">
+            <h1>AI Q&A</h1>
         </div>
-        <div class="content">
-            <textarea id="inputArea" placeholder="Enter your text here" spellcheck="false"></textarea>
-            <button id="actionBtn">Submit</button>
-            <div id="output"></div>
+        <div class="main-content">
+            <div class="sidebar">
+                <button class="sidebar-btn" id="sendBtn">자기소개서 작성</button>
+                <button class="sidebar-btn" id="analyzeBtn">자기소개서 분석</button>
+                <button class="sidebar-btn" id="plagiarismBtn">카피킬러</button>
+                <button class="sidebar-btn" id="spellCheckBtn">맞춤법 검사</button>
+            </div>
+            <div class="chat-container">
+                <div id="chat-box">
+                </div>
+                <textarea id="inputArea" placeholder="Type your message here..." spellcheck="false"></textarea>
+                <button class="submit-btn" id="actionBtn">Send</button>
+            </div>
         </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
