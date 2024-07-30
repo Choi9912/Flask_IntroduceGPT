@@ -218,17 +218,9 @@ class SpellChecker:
     def __init__(self, api_url):
         self.api_url = api_url
 
-    def check(self, text, method):
-        if method == 'iterative_refinement':
-            return self.iterative_refinement(text)
-        elif method == 'step_by_step':
-            return self.step_by_step(text)
-        elif method == 'few_shot':
-            return self.few_shot(text)
-        elif method == 'constraint_setting':
-            return self.constraint_setting(text)
-        else:
-            return 'Error: Invalid method'
+    def check(self, text):
+        messages = self.create_messages(text)
+        return self.send_request(messages)
     
     def iterative_refinement(self, text):
         return self.send_request(self.create_messages(text))
@@ -330,9 +322,8 @@ class PromptOptimizerApp:
     def spell_check_route(self):
         data = request.get_json()
         text = data.get('text')
-        method = data.get('method', 'iterative_refinement')  # Default to 'iterative_refinement'
-        logging.debug(f"Received text for spell check: {text} with method: {method}")
-        report = self.spell_checker.check(text, method)
+        logging.debug(f"Received text for spell check: {text}")
+        report = self.spell_checker.check(text)
         return jsonify({'spell_check_report': report})
 
     def run(self):
