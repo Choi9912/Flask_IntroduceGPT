@@ -5,28 +5,32 @@ document.addEventListener('DOMContentLoaded', function() {
     const spellCheckBtn = document.getElementById('spellCheckBtn');
     const actionBtn = document.getElementById('actionBtn');
     const inputArea = document.getElementById('inputArea');
-    const outputDiv = document.getElementById('output');
+    const chatBox = document.getElementById('chat-box');
 
     let currentAction = null;
 
     sendBtn.addEventListener('click', () => {
         currentAction = 'generate';
         inputArea.placeholder = 'Enter your question here';
+        appendMessage('bot', '자기소개서 작성 기능을 선택하셨습니다.');
     });
 
     analyzeBtn.addEventListener('click', () => {
         currentAction = 'analyze';
         inputArea.placeholder = 'Enter your self-introduction here';
+        appendMessage('bot', '자기소개서 분석 기능을 선택하셨습니다.');
     });
 
     plagiarismBtn.addEventListener('click', () => {
         currentAction = 'plagiarism_check';
         inputArea.placeholder = 'Enter your text for plagiarism check';
+        appendMessage('bot', '카피킬러 기능을 선택하셨습니다.');
     });
 
     spellCheckBtn.addEventListener('click', () => {
         currentAction = 'spell_check';
         inputArea.placeholder = 'Enter your text for spell check';
+        appendMessage('bot', '맞춤법 검사 기능을 선택하셨습니다.');
     });
 
     actionBtn.addEventListener('click', () => {
@@ -44,17 +48,14 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'analyze':
                 url = '/analyze';
                 body.introduction = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             case 'plagiarism_check':
                 url = '/plagiarism_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             case 'spell_check':
                 url = '/spell_check';
                 body.text = text;
-                body.method = 'iterative_refinement'; // Default method
                 break;
             default:
                 return;
@@ -63,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Sending request to ${url} with body:`, body);  
 
         actionBtn.disabled = true;
-        outputDiv.textContent = 'Loading...';
+        appendMessage('user', text);
+        inputArea.value = '';
 
         fetch(url, {
             method: 'POST',
@@ -92,16 +94,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 default:
                     resultText = 'No valid action performed.';
             }
-            outputDiv.textContent = resultText;
+            appendMessage('bot', resultText);
         })
         .catch(error => {
             console.error('Error:', error);
-            outputDiv.textContent = 'Error: Unable to get a response from the server.';
+            appendMessage('bot', 'Error: Unable to get a response from the server.');
         })
         .finally(() => {
-            // Re-enable the action button and clear the input
+            // Re-enable the action button
             actionBtn.disabled = false;
-            inputArea.value = '';
         });
     });
+
+    function appendMessage(sender, message) {
+        let messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', sender);
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 });
