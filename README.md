@@ -71,13 +71,15 @@
 
 | 자기소개서 작성 | 자기소개서 분석  |
 | --- | --- |
-| ![자기소개서 작성](https://github.com/user-attachments/assets/48424487-a90c-47de-8c8f-f85979deafd7) | ![자기소개서 분석](https://github.com/user-attachments/assets/847b8f3a-8c26-4d72-81a8-47b2dd035406)
+| ![자기소개서 작성](https://github.com/user-attachments/assets/f7caafb8-c0b7-431a-b748-bb69357f1f63) | ![자기소개서 분석](https://github.com/user-attachments/assets/91461315-e3b1-4921-876c-bb20fd74ba28)
+
 
 
 
 | 카피 킬러 | 맞춤법 검사 | 면접 질문 예상 |
 | --- | --- | -- |
-| ![카피킬러](https://github.com/user-attachments/assets/e88faebf-b297-45ae-9634-98b6e2e8cd71) | ![맞춤법검사](https://github.com/user-attachments/assets/c66c4655-bca1-413d-a4d0-a093a1d90096) | ![면접 질문 예상](https://github.com/user-attachments/assets/053c3f1c-15cd-4992-b16c-7e8af886d451)
+| ![카피 킬러](https://github.com/user-attachments/assets/c4542b40-5156-4a81-a23f-2c13c6454ed0) | ![맞춤법 검사](https://github.com/user-attachments/assets/c53eb6e1-aace-4155-8c28-0f3335ba6264) | ![면접 예상 질문](https://github.com/user-attachments/assets/4df4b35b-35c2-4ca5-a5d8-b4d8e89e9351)
+
 
  
 
