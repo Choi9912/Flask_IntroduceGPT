@@ -16,7 +16,8 @@ http://43.203.240.66:5000/
    ```
 
 ## WBS
-![WBS](WBS.PNG)
+![WBS](https://github.com/user-attachments/assets/e5b39466-3c71-4f92-bb7b-e85f7621c8c9)
+
 
 ## 기술 스택
 **Enviroment**  
@@ -47,39 +48,58 @@ http://43.203.240.66:5000/
 
 | 자기소개서 작성 | 자기소개서 분석  |
 | --- | --- |
-| ![자기소개서 작성](https://github.com/user-attachments/assets/ccf01159-0173-4ce7-a11b-3c4d49aa6a51) | ![자기소개서 분석](https://github.com/user-attachments/assets/5803ae7f-ec0c-45b5-89e1-084aee6e01b9)
- |
-
-| 카피 킬러 | 맞춤법 검사 |
-| --- | --- |
-| ![카피킬러](https://github.com/user-attachments/assets/2ac3030e-ca2f-40c7-adf8-36980536cf31) | ![맞춤법 검사](https://github.com/user-attachments/assets/04297c36-71e4-4bbe-9b68-3d4423c65428)
- |
+| ![자기소개서 작성](https://github.com/user-attachments/assets/48424487-a90c-47de-8c8f-f85979deafd7) | ![자기소개서 분석](https://github.com/user-attachments/assets/847b8f3a-8c26-4d72-81a8-47b2dd035406)
 
 
-# 회고
-## 코드 분석
+
+| 카피 킬러 | 맞춤법 검사 | 면접 질문 예상 |
+| --- | --- | -- |
+| ![카피킬러](https://github.com/user-attachments/assets/e88faebf-b297-45ae-9634-98b6e2e8cd71) | ![맞춤법검사](https://github.com/user-attachments/assets/c66c4655-bca1-413d-a4d0-a093a1d90096) | ![면접 질문 예상](https://github.com/user-attachments/assets/053c3f1c-15cd-4992-b16c-7e8af886d451)
+
+ 
+
+
+## 코드 
+### 프롬프트 최적화
 ```python
 class SelfIntroductionWriter: # 자기소개서 작성
+   def check(self,text,method)
+        if method == 'improved_prompt':
+            return self.improved_prompt(job_description)
+        elif method == 'step_by_step_prompt':
+            return self.step_by_step_prompt(job_description)
+        elif method == 'example_prompt':
+            return self.example_prompt(job_description)
+        elif method == 'constrained_prompt':
+            return self.constrained_prompt(job_description)
+        else:
+            return 'Error: Invalid method'
 
 class SelfIntroductionAnalyzer: # 자기소개서 분석
-
+    ~
 class PlagiarismDetector: # AI카피킬러
-
+   ~
 class SpellChecker: # 맞춤법 검사
-
+   ~
+```
+- 각 기능의 클래스에 들어가는 프롬프트 최적화 기법
+  - improved_prompt : 여러 번의 반복을 통해 자기소개서를 점진적으로 개선합니다.
+  - step_by_step_prompt : 자기소개서를 개별 단계로 나누어 상세히 분석합니다.
+  - example_prompt : 예제를 사용하여 분석을 안내하고 타겟 피드백을 제공합니다.
+  - constrained_prompt  : 특정 제약 조건을 가지고 자기소개서를 분석하여 철저함을 보장합니다.
+    
+### 웹 애플리케이션 설정 및 엔드포인트 처리
+```python
 class PromptOptimizerApp # 위의 다양한 기능들을 작업 수행
+   def setup_routes(self) # 라우트 설정 메서드
+   def index(self) # 인덱스 페이지
+   def generate(self) # 자기소개서 작성 
+   def analyze_route(self) # 자기소개서 분석
+   def plagiarism_check_route(self) #표절 검사
+   def spell_check_route(self) # 맞춤법 검사
+   def generate_interview_questions_route(self) # 면접 예상 질문
+
 ```
 
-- 각 기능의 클래스에 들어가는 프롬프트 최적화 기법
-  - iterative_refinement: 여러 번의 반복을 통해 자기소개서를 점진적으로 개선합니다.
-  - step_by_step: 자기소개서를 개별 단계로 나누어 상세히 분석합니다.
-  - few_shot: 예제를 사용하여 분석을 안내하고 타겟 피드백을 제공합니다.
-  - constraint_setting : 특정 제약 조건을 가지고 자기소개서를 분석하여 철저함을 보장합니다.
 
 
-
-## 느낀점 및 개선해야할 점
-- 이번 프로젝트는 기존에 해보지 못한 기능 및 프레임워크를 사용하는 것을 생각하며 프로젝트를 진행하게 되었습니다. 그래서 Flask라는 프레임워크를 웹개발 제작과 AWS EC2를 통한 배포까지 진행하게 되었습니다.</br>
-처음부터 진행이 매끄럽진 않았지만 이 프로젝트를 진행하면서 다양한 경험을 하게 되면서 성장한다는 기분이 들었습니다
-
-- app.py에서 class를 활용하며 코드의 가독성을 높이려했지만 아직 부족한 점이 있는 거 같다. 이후에는 상속기능을 사용하면 더욱 코드가 간결하고 깔끔해질 거라 생각이 듭니다
