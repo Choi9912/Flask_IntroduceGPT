@@ -60,7 +60,7 @@ class SelfIntroductionWriter:
 
     def unified_prompt(self, prompt):
         steps = (
-            "소제목을 포함하고, 문단을 나누어 500자 이상으로 "
+            "소제목을 포함하고, 두괄식으로 작성하며, 문장을 간결하게 쓰고, 문단을 나누어 "
             "자기소개서를 작성해주세요."
         )
         messages = self.create_messages(prompt, steps)
