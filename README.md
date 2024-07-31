@@ -15,8 +15,10 @@ http://43.203.240.66:5000/
    python app.py
    ```
 
-## WBS
-![mermaid-ai-diagram-2024-07-31-013120](https://github.com/user-attachments/assets/5cbb9120-3fc8-4315-ad76-a984e5160721)
+| WBS | WireFrame |
+| --- | --- |
+| <img src="https://github.com/user-attachments/assets/5cbb9120-3fc8-4315-ad76-a984e5160721" alt="mermaid-ai-diagram-2024-07-31-013120" style="width: 600px;"> | <img src="https://github.com/user-attachments/assets/4cdd0935-f72b-48e1-8f8c-8c2c51627d83" alt="WireFrame" style="width: 300px;"> |
+
 
 
 ## 기술 스택
