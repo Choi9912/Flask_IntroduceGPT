@@ -16,7 +16,7 @@ http://43.203.240.66:5000/
    ```
 
 ## WBS
-![WBS](https://github.com/user-attachments/assets/e5b39466-3c71-4f92-bb7b-e85f7621c8c9)
+![mermaid-ai-diagram-2024-07-31-013120](https://github.com/user-attachments/assets/5cbb9120-3fc8-4315-ad76-a984e5160721)
 
 
 ## 기술 스택
