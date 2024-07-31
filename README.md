@@ -123,7 +123,7 @@ class SpellChecker: # 맞춤법 검사
         messages = self.create_messages(text, steps)
         return self.send_request(messages)
 
-class InterviewQuestionGenerator # 면접 예상 질문
+class InterviewQuestionGenerator: # 면접 예상 질문
        def unified_prompt(self, job_description):
         steps = (
             "채용정보를 분석하여 주요 요구사항과 필수 스킬을 식별하고, 이에 맞는 면접 질문을 생성합니다. "
