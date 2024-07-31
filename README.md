@@ -1,4 +1,4 @@
-﻿# Flask_GPTapi 토이 프로젝트
+﻿# Flask_GPTapi 프로젝트
 
 ## 배포주소
 http://43.203.240.66:5000/
