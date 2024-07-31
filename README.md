@@ -86,31 +86,50 @@
 ### 프롬프트 최적화
 ```python
 class SelfIntroductionWriter: # 자기소개서 작성
-   def check(self,text,method)
-        if method == 'improved_prompt':
-            return self.improved_prompt(job_description)
-        elif method == 'step_by_step_prompt':
-            return self.step_by_step_prompt(job_description)
-        elif method == 'example_prompt':
-            return self.example_prompt(job_description)
-        elif method == 'constrained_prompt':
-            return self.constrained_prompt(job_description)
-        else:
-            return 'Error: Invalid method'
+       def unified_prompt(self, prompt):
+        steps = (
+            "소제목을 포함하고, 문단을 나누어 500자 이상으로 "
+            "자기소개서를 작성해주세요."
+        )
+        messages = self.create_messages(prompt, steps)
+        return self.send_request(messages)
 
 class SelfIntroductionAnalyzer: # 자기소개서 분석
-    ~
+    def unified_prompt(self, introduction):
+        steps = (
+            "자기소개서를 분석하여 주요 포인트와 주제를 식별하고, "
+            "구조와 일관성을 평가합니다. "
+            "자기소개서의 강점과 개선할 점을 자세하게 알려주세요."
+        )
+        messages = self.create_messages(introduction, steps)
+        return self.send_request(messages)
+
 class PlagiarismDetector: # AI카피킬러
-   ~
+       def unified_prompt(self, text):
+        steps = (
+            "텍스트를 분석하여 주요 포인트와 주제를 식별하고, 문장 구조와 단어 선택을 평가합니다. "
+            "아이디어의 독창성을 평가하고, 다른 출처와의 유사성을 평가하여 표절 여부를 판단해주세요."
+        )
+        messages = self.create_messages(text, steps)
+        return self.send_request(messages)
+
 class SpellChecker: # 맞춤법 검사
-   ~
+       def unified_prompt(self, text):
+        steps = (
+            "텍스트의 철자와 문법을 철저히 검사하고, 문장 구조와 일관성을 고려하여 전체 텍스트를 평가해주세요."
+        )
+        messages = self.create_messages(text, steps)
+        return self.send_request(messages)
+
 class InterviewQuestionGenerator # 면접 예상 질문
+       def unified_prompt(self, job_description):
+        steps = (
+            "채용정보를 분석하여 주요 요구사항과 필수 스킬을 식별하고, 이에 맞는 면접 질문을 생성합니다. "
+            "채용정보에 명시된 요구사항과 필수 스킬을 기반으로 질문을 만들어 주세요."
+        )
+        messages = self.create_messages(job_description, steps)
+        return self.send_request(messages)
 ```
-- 각 기능의 클래스에 들어가는 프롬프트 최적화 기법
-  - improved_prompt : 여러 번의 반복을 통해 자기소개서를 점진적으로 개선합니다.
-  - step_by_step_prompt : 자기소개서를 개별 단계로 나누어 상세히 분석합니다.
-  - example_prompt : 예제를 사용하여 분석을 안내하고 타겟 피드백을 제공합니다.
-  - constrained_prompt  : 특정 제약 조건을 가지고 자기소개서를 분석하여 철저함을 보장합니다.
     
 ### 웹 애플리케이션 설정 및 엔드포인트 처리
 ```python
