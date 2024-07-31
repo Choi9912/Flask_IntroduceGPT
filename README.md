@@ -104,6 +104,7 @@ class PlagiarismDetector: # AI카피킬러
    ~
 class SpellChecker: # 맞춤법 검사
    ~
+class InterviewQuestionGenerator # 면접 예상 질문
 ```
 - 각 기능의 클래스에 들어가는 프롬프트 최적화 기법
   - improved_prompt : 여러 번의 반복을 통해 자기소개서를 점진적으로 개선합니다.
