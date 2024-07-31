@@ -88,7 +88,7 @@
 ### 프롬프트 최적화
 ```python
 class SelfIntroductionWriter: # 자기소개서 작성
-       def unified_prompt(self, prompt):
+   def unified_prompt(self, prompt):
         steps = (
             "소제목을 포함하고, 문단을 나누어 500자 이상으로 "
             "자기소개서를 작성해주세요."
@@ -97,7 +97,7 @@ class SelfIntroductionWriter: # 자기소개서 작성
         return self.send_request(messages)
 
 class SelfIntroductionAnalyzer: # 자기소개서 분석
-    def unified_prompt(self, introduction):
+   def unified_prompt(self, introduction):
         steps = (
             "자기소개서를 분석하여 주요 포인트와 주제를 식별하고, "
             "구조와 일관성을 평가합니다. "
@@ -107,7 +107,7 @@ class SelfIntroductionAnalyzer: # 자기소개서 분석
         return self.send_request(messages)
 
 class PlagiarismDetector: # AI카피킬러
-       def unified_prompt(self, text):
+   def unified_prompt(self, text):
         steps = (
             "텍스트를 분석하여 주요 포인트와 주제를 식별하고, 문장 구조와 단어 선택을 평가합니다. "
             "아이디어의 독창성을 평가하고, 다른 출처와의 유사성을 평가하여 표절 여부를 판단해주세요."
@@ -116,7 +116,7 @@ class PlagiarismDetector: # AI카피킬러
         return self.send_request(messages)
 
 class SpellChecker: # 맞춤법 검사
-       def unified_prompt(self, text):
+   def unified_prompt(self, text):
         steps = (
             "텍스트의 철자와 문법을 철저히 검사하고, 문장 구조와 일관성을 고려하여 전체 텍스트를 평가해주세요."
         )
@@ -124,7 +124,7 @@ class SpellChecker: # 맞춤법 검사
         return self.send_request(messages)
 
 class InterviewQuestionGenerator: # 면접 예상 질문
-       def unified_prompt(self, job_description):
+   def unified_prompt(self, job_description):
         steps = (
             "채용정보를 분석하여 주요 요구사항과 필수 스킬을 식별하고, 이에 맞는 면접 질문을 생성합니다. "
             "채용정보에 명시된 요구사항과 필수 스킬을 기반으로 질문을 만들어 주세요."
@@ -135,14 +135,14 @@ class InterviewQuestionGenerator: # 면접 예상 질문
     
 ### 웹 애플리케이션 설정 및 엔드포인트 처리
 ```python
-class PromptOptimizerApp # 위의 다양한 기능들을 작업 수행
-   def setup_routes(self) # 라우트 설정 메서드
-   def index(self) # 인덱스 페이지
-   def generate(self) # 자기소개서 작성 
-   def analyze_route(self) # 자기소개서 분석
-   def plagiarism_check_route(self) #표절 검사
-   def spell_check_route(self) # 맞춤법 검사
-   def generate_interview_questions_route(self) # 면접 예상 질문
+class PromptOptimizerApp: # 위의 다양한 기능들을 작업 수행
+   def setup_routes(self): ... # 라우트 설정 메서드
+   def index(self): ... # 인덱스 페이지
+   def generate(self): ... # 자기소개서 작성 
+   def analyze_route(self): ... # 자기소개서 분석
+   def plagiarism_check_route(self): ... #표절 검사
+   def spell_check_route(self): ... # 맞춤법 검사
+   def generate_interview_questions_route(self): ... # 면접 예상 질문
 
 ```
 
