@@ -93,7 +93,13 @@ def send_api_request(api_url, role, user_content):
 ```
 ### Unified Prompt Handler Base Class
 ```python
-class UnifiedPromptHandler: ...
+class UnifiedPromptHandler:
+    def handle(self, content, method, role_template, user_content_template):
+        if method == 'unified_prompt':
+            role = role_template
+            user_content = user_content_template.format(content)
+            return send_api_request(self.api_url, role, user_content)
+        return 'Error: Invalid method'
 ```
 ### Task-Specific Classes
 ```python
