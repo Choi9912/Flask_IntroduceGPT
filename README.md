@@ -81,70 +81,40 @@
 | ![카피 킬러](https://github.com/user-attachments/assets/c4542b40-5156-4a81-a23f-2c13c6454ed0) | ![맞춤법 검사](https://github.com/user-attachments/assets/c53eb6e1-aace-4155-8c28-0f3335ba6264) | ![면접 예상 질문](https://github.com/user-attachments/assets/4df4b35b-35c2-4ca5-a5d8-b4d8e89e9351)
 
 
- 
-
-
 ## 코드 요약
-### 프롬프트 최적화
+### API Request Function 
 ```python
-class SelfIntroductionWriter: # 자기소개서 작성
-   def unified_prompt(self, prompt):
-        steps = (
-            "소제목을 포함하고, 문단을 나누어 500자 이상으로 "
-            "자기소개서를 작성해주세요."
-        )
-        messages = self.create_messages(prompt, steps)
-        return self.send_request(messages)
-
-class SelfIntroductionAnalyzer: # 자기소개서 분석
-   def unified_prompt(self, introduction):
-        steps = (
-            "자기소개서를 분석하여 주요 포인트와 주제를 식별하고, "
-            "구조와 일관성을 평가합니다. "
-            "자기소개서의 강점과 개선할 점을 자세하게 알려주세요."
-        )
-        messages = self.create_messages(introduction, steps)
-        return self.send_request(messages)
-
-class PlagiarismDetector: # AI카피킬러
-   def unified_prompt(self, text):
-        steps = (
-            "텍스트를 분석하여 주요 포인트와 주제를 식별하고, 문장 구조와 단어 선택을 평가합니다. "
-            "아이디어의 독창성을 평가하고, 다른 출처와의 유사성을 평가하여 표절 여부를 판단해주세요."
-        )
-        messages = self.create_messages(text, steps)
-        return self.send_request(messages)
-
-class SpellChecker: # 맞춤법 검사
-   def unified_prompt(self, text):
-        steps = (
-            "텍스트의 철자와 문법을 철저히 검사하고, 문장 구조와 일관성을 고려하여 전체 텍스트를 평가해주세요."
-        )
-        messages = self.create_messages(text, steps)
-        return self.send_request(messages)
-
-class InterviewQuestionGenerator: # 면접 예상 질문
-   def unified_prompt(self, job_description):
-        steps = (
-            "채용정보를 분석하여 주요 요구사항과 필수 스킬을 식별하고, 이에 맞는 면접 질문을 생성합니다. "
-            "채용정보에 명시된 요구사항과 필수 스킬을 기반으로 질문을 만들어 주세요."
-        )
-        messages = self.create_messages(job_description, steps)
-        return self.send_request(messages)
+def send_api_request(api_url, role, user_content): 
+    messages = [
+        {"role": "system", "content": role},
+        {"role": "user", "content": user_content}
+    ] 
+   ...
 ```
-    
-### 웹 애플리케이션 설정 및 엔드포인트 처리
+### Unified Prompt Handler Base Class
+```python
+class UnifiedPromptHandler: ...
+```
+### Task-Specific Classes
+```python
+class SelfIntroductionAnalyzer(UnifiedPromptHandler): ...
+class SelfIntroductionWriter(UnifiedPromptHandler): ...
+class PlagiarismDetector(UnifiedPromptHandler): ...
+class SpellChecker(UnifiedPromptHandler): ...
+class InterviewQuestionGenerator(UnifiedPromptHandler): ...
+```
+### Flask App Routes Setup
 ```python
 class PromptOptimizerApp: # 위의 다양한 기능들을 작업 수행
    def setup_routes(self): ... # 라우트 설정 메서드
-   def index(self): ... # 인덱스 페이지
-   def generate(self): ... # 자기소개서 작성 
-   def analyze_route(self): ... # 자기소개서 분석
-   def plagiarism_check_route(self): ... #표절 검사
-   def spell_check_route(self): ... # 맞춤법 검사
-   def generate_interview_questions_route(self): ... # 면접 예상 질문
-
+   def add_route(self, rule, endpoint, handler, data_key): ...
+   def generic_route(self, handler, data_key):
+   def index(self):
+   def run(self):
 ```
+## 개선 사항
+- 예상 면접 질문 기능 추가
+- 코드의 효율성 및 최적화 : **상속 이용**
 
 ## 회고
 - 이번 프로젝트는 이전에 사용했던 기술, 프레임워크들을 이용하지 않고 새로운 기술과 프레임워크를 사용하는 목표로 뒀습니다. </br>
