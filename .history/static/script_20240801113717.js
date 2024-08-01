@@ -85,33 +85,30 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(body)
         })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             console.log('Received response:', data);
             let resultText;
             switch (currentAction) {
                 case 'generate':
-                    resultText = data.question_result || 'No response';
+                    resultText = data.answer || 'No response';
                     break;
                 case 'analyze':
-                    resultText = data.introduction_result || 'No response';
+                    resultText = data.analysis || 'No response';
                     break;
                 case 'plagiarism_check':
-                    resultText = data.text_result || 'No report';
+                    resultText = data.plagiarism_report || 'No report';
                     break;
                 case 'spell_check':
-                    resultText = data.text_result || 'No report';
+                    resultText = data.spell_check_report || 'No report';
                     break;
                 case 'generate_interview_questions':
-                    resultText = data.job_description_result || 'No questions';
+                    resultText = data.questions || 'No questions';
                     break;
                 default:
                     resultText = 'No valid action performed.';
             }
-            resultText = resultText.replace(/### /g, '').replace(/## /g, '').replace(/# /g, '').replace(/\*\*/g, '');
+            resultText = resultText.replace(/### /g, '').replace(/\*\*/g, '');
             appendParagraphs('bot', resultText);
         })
         .catch(error => {

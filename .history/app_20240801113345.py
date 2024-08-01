@@ -93,9 +93,7 @@ class PromptOptimizerApp:
         method = data.get('method', 'unified_prompt')
         logging.debug(f"Received {data_key}: {content} with method: {method}")
         result = handler(content, method)
-        logging.debug(f"Result for {data_key}: {result}")
         return jsonify({f'{data_key}_result': result})
-
 
     def index(self):
         return render_template('index.html')
