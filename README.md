@@ -78,7 +78,7 @@
 
 | 카피 킬러 | 맞춤법 검사 | 면접 질문 예상 |
 | --- | --- | -- |
-| ![카피 킬러](https://github.com/user-attachments/assets/c4542b40-5156-4a81-a23f-2c13c6454ed0) | ![맞춤법 검사](https://github.com/user-attachments/assets/c53eb6e1-aace-4155-8c28-0f3335ba6264) | ![면접 예상 질문](https://github.com/user-attachments/assets/4df4b35b-35c2-4ca5-a5d8-b4d8e89e9351)
+| ![카피 킬러](https://github.com/user-attachments/assets/c4542b40-5156-4a81-a23f-2c13c6454ed0) | ![맞춤법 검사](https://github.com/user-attachments/assets/7d7fcf30-48f7-4706-ae2b-c6853430045d) | ![면접 예상 질문](https://github.com/user-attachments/assets/4df4b35b-35c2-4ca5-a5d8-b4d8e89e9351)
 
 
 ## 코드 요약
