@@ -83,6 +83,7 @@
 
 ## 코드 요약
 ### API Request Function 
+- GPT API 요청을 보내고 응답 반환
 ```python
 def send_api_request(api_url, role, user_content): 
     messages = [
@@ -92,6 +93,7 @@ def send_api_request(api_url, role, user_content):
    ...
 ```
 ### Unified Prompt Handler Base Class
+- 통합 프롬프트를 처리하는 기본 핸들러 클래스
 ```python
 class UnifiedPromptHandler:
     def handle(self, content, method, role_template, user_content_template):
@@ -102,6 +104,7 @@ class UnifiedPromptHandler:
         return 'Error: Invalid method'
 ```
 ### Task-Specific Classes
+- 각 기능들 수행 + 상속을 받아 기본 처리 로직 공유
 ```python
 class SelfIntroductionAnalyzer(UnifiedPromptHandler): ...
 class SelfIntroductionWriter(UnifiedPromptHandler): ...
@@ -110,13 +113,14 @@ class SpellChecker(UnifiedPromptHandler): ...
 class InterviewQuestionGenerator(UnifiedPromptHandler): ...
 ```
 ### Flask App Routes Setup
+- 다양한 기능을 위한 Flask 애플리케이션 설정.
 ```python
-class PromptOptimizerApp: # 위의 다양한 기능들을 작업 수행
-   def setup_routes(self): ... 
-   def add_route(self, rule, endpoint, handler, data_key): ... 
-   def generic_route(self, handler, data_key): ... 
-   def index(self): ...
-   def run(self): ... 
+class PromptOptimizerApp: 
+   def setup_routes(self): ... # 앱의 라우트를 설정.
+   def add_route(self, rule, endpoint, handler, data_key): ...  # 라우트와 핸들러를 추가.
+   def generic_route(self, handler, data_key): ... # 공통 라우팅 로직을 처리.
+   def index(self): ... # 기본 인덱스 페이지 렌더링.
+   def run(self): ... # 앱 실행
 ```
 ## 개선 사항
 - 예상 면접 질문 기능 추가
