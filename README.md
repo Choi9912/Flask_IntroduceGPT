@@ -28,7 +28,7 @@
 
 **Development** 
 
-<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/flask-FF9900?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/amazonec2-000000?style=for-the-badge&logo=amazonec2&logoColor=white"> 
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white"> <img src="https://img.shields.io/badge/flask-FF9900?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/amazonec2-000000?style=for-the-badge&logo=amazonec2&logoColor=white"> 
 
 
 ## 프로젝트 소개
@@ -124,8 +124,11 @@ class PromptOptimizerApp:
 ```
 ## 개선 사항
 - 예상 면접 질문 기능 추가
-- 코드의 효율성 및 최적화 : **상속 이용**
+   - GPT API를 활용해 사용자의 경험과 일치하는 구체적인 질문과 답변 작성 
+- 코드의 효율성 및 최적화
+   - 코드 중복을 줄이기 위해 상속과 다형성 활용
+   - 코드 리펙토링을 통해 가독성과 유지보수성을 높임
 
 ## 회고
-- 이번 프로젝트는 이전에 사용했던 기술, 프레임워크들을 이용하지 않고 새로운 기술과 프레임워크를 사용하는 목표로 뒀습니다. </br>
-그래서 API활용, Flask, aws ec2를 활용한 배포까지 처음 해보는 경험이었고 많은 공부가 되었다는 생각이 듭니다.
+이번 프로젝트는 이전에 사용해보지 않은 기술과 프레임워크를 도입하여 새로운 도전을 했다는 점에서 큰 의미가 있었습니다. 
+특히, API 활용, Flask, AWS EC2를 통한 배포 등의 새로운 기술을 습득하며 많은 것을 배웠습니다.
